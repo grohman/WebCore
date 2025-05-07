@@ -14,6 +14,10 @@ interface IWebRequest
 	public function isPost(): bool;
 	public function isPut(): bool;
 	public function isDelete(): bool;
+	// public function isHead(): bool;
+	// public function isPatch(): bool;
+	// public function isOptions(): bool;
+	// public function isTrace(): bool;
 	
 	public function isHttp(): bool;
 	public function isHttps(): bool;

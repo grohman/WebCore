@@ -7,15 +7,10 @@ use PHPUnit\Framework\TestCase;
 
 class HeadersLoaderTest extends TestCase
 {
-	private static array $server = [];
-	
-	
-	protected function setUp(): void
+	protected function setUp()
 	{
 		$_SERVER = [];
-		
-		resetStaticDataMember(HeadersLoader::class, 'exactHeaders');
-		resetStaticDataMember(HeadersLoader::class, 'lowerCaseHeaders');
+		resetStaticDataMember(HeadersLoader::class, 'headers');
 	}
 	
 	
@@ -38,7 +33,7 @@ class HeadersLoaderTest extends TestCase
 			'CONTENT_LENGTH' 	=> 50,
 			'CONTENT_TYPE'		=> 'TestType',
 			'REMOTE_ADDR'		=> '1.1.1.1'
-		], HeadersLoader::getAllHeaders(true));
+		], HeadersLoader::getAllHeaders());
 	}
 	
 	public function test_getAllHeaders_ServerGlobalSet_StripHttpPrefix()
@@ -49,7 +44,7 @@ class HeadersLoaderTest extends TestCase
 		self::assertEquals([
 			'HEADER_A' => 'test',
 			'HEADER_B' => 555
-		], HeadersLoader::getAllHeaders(true));
+		], HeadersLoader::getAllHeaders());
 	}
 	
 	public function test_getAllHeaders_NoHeaders_ReturnEmptyArray()
@@ -57,25 +52,9 @@ class HeadersLoaderTest extends TestCase
 		self::assertEquals([], HeadersLoader::getAllHeaders());
 	}
 	
-	public function test_getAllHeaders_CaseInsensitive_ReturnAllInLowerCase()
-	{
-		$_SERVER['HTTP_HEADER_A'] = 'test';
-		$_SERVER['HTTP_HEADER_B'] = 555;
-		
-		self::assertEquals([
-			'header_a' => 'test',
-			'header_b' => 555
-		], HeadersLoader::getAllHeaders());
-	}
 	
-	
-	public static function setUpBeforeClass(): void
+	public static function tearDownAfterClass()
 	{
-		self::$server = $_SERVER;
-	}
-	
-	public static function tearDownAfterClass(): void
-	{
-		$_SERVER = self::$server;
+		$_SERVER = [];
 	}
 }

@@ -21,4 +21,9 @@ class Utilities
 	{
 		return IsHTTPSValidator::isHttps();
 	}
+	
+	public static function getGenericHeaderName(string $header): string
+	{
+		return strtolower(str_replace('-', '_', $header));
+	}
 }

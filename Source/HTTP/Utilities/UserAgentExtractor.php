@@ -16,6 +16,9 @@ class UserAgentExtractor
 		if ($request->hasHeader('User-Agent'))
 			return $request->getHeader('User-Agent');
 		
+		if ($request->hasHeader('User_Agent'))
+			return $request->getHeader('User_Agent');
+		
 		return $default;
 	}
 }

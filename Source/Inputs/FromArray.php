@@ -2,6 +2,7 @@
 namespace WebCore\Inputs;
 
 
+use Structura\Arrays;
 use Traitor\TEnum;
 use WebCore\Exception\BadRequestException;
 use WebCore\Exception\ServerErrorException;
@@ -22,14 +23,23 @@ class FromArray implements IInput
 	private $max;
 	private $minInclusive;
 	private $maxInclusive;
+	private $useMultibyte = false;
 	
 	
-	private function isMatchLength(string $string): bool 
+	private function isMatchLength(string $string): bool
 	{
 		if (is_null($this->minStrLen) || is_null($this->maxStrLen))
 			return true;
 		
-		$len = strlen($string);
+		if ($this->useMultibyte)
+		{
+			$len = mb_strlen($string);
+		}
+		else
+		{
+			$len = strlen($string);
+		}
+		
 		$result = $len >= $this->minStrLen && $len <= $this->maxStrLen;
 		
 		$this->minStrLen = null;
@@ -75,7 +85,7 @@ class FromArray implements IInput
 	
 	public function withLength(int $length, ?int $max = null): IInput
 	{
-		if (is_null($max)) 
+		if (is_null($max))
 		{
 			$max = $length;
 			$length = 0;
@@ -94,7 +104,7 @@ class FromArray implements IInput
 	
 	public function withExactLength(int $length): IInput
 	{
-		if ($length < 0) 
+		if ($length < 0)
 		{
 			throw new ServerErrorException("Parameters passed to function are not valid: $length");
 		}
@@ -222,14 +232,14 @@ class FromArray implements IInput
 		return ($this->isInt($name) && $this->isMatchRange((int)$this->source[$name])) ? (int)$this->source[$name] : $default;
 	}
 	
-	public function bool(string $name, ?bool $default = null): ?bool 
+	public function bool(string $name, ?bool $default = null): ?bool
 	{
-		return $this->has($name) && InputValidationHelper::isBool($this->source[$name]) ? 
-			BooleanConverter::get($this->source[$name]) : 
+		return $this->has($name) && InputValidationHelper::isBool($this->source[$name]) ?
+			BooleanConverter::get($this->source[$name]) :
 			$default;
 	}
 	
-	public function float(string $name, ?float $default = null): ?float 
+	public function float(string $name, ?float $default = null): ?float
 	{
 		return ($this->isFloat($name) && $this->isMatchRange((float)$this->source[$name])) ? (float)$this->source[$name] : $default;
 	}
@@ -257,9 +267,19 @@ class FromArray implements IInput
 	
 	public function string(string $name, ?string $default = null): ?string
 	{
-		return ($this->has($name) && is_string($this->source[$name]) && $this->isMatchLength($this->source[$name])) ? 
-			$this->source[$name] : 
+		return ($this->has($name) && is_string($this->source[$name]) && $this->isMatchLength($this->source[$name])) ?
+			$this->source[$name] :
 			$default;
+	}
+	
+	public function mbstring(string $name, ?string $default = null): ?string
+	{
+		$this->useMultibyte = true;
+		
+		$result = $this->string($name, $default);
+		$this->useMultibyte = false;
+		
+		return $result;
 	}
 	
 	public function enum(string $name, $enumValues, ?string $default = null): ?string
@@ -384,7 +404,7 @@ class FromArray implements IInput
 	
 	public function csv(string $name, string $glue = ','): ArrayInput
 	{
-		if ($this->has($name) && is_string($this->source[$name])) 
+		if ($this->has($name) && is_string($this->source[$name]))
 		{
 			$array = explode($glue, $this->source[$name]);
 			return new ArrayInput($array);
@@ -398,9 +418,9 @@ class FromArray implements IInput
 	
 	public function array(string $name): ArrayInput
 	{
-		if ($this->has($name) && is_array($this->source[$name]))
+		if ($this->has($name))
 		{
-			return new ArrayInput($this->source[$name]);
+			return new ArrayInput(Arrays::toArray($this->source[$name]));
 		}
 		else
 		{

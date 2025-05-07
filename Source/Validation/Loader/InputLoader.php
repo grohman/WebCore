@@ -23,7 +23,7 @@ class InputLoader
 
 	public function get(\ReflectionParameter $p, bool &$isFound): ?IInput
 	{
-		$class = $p->getClass();
+		$class = get_param_class($p);
 		$isFound = false;
 		
 		if (!$class || $class->getName() != IInput::class)

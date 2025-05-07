@@ -23,7 +23,7 @@ class SkeletonLoader
 	
 	public function get(\ReflectionParameter $p, bool &$isFound): ?IInput
 	{
-		if ($p->getClass())
+		if (get_param_class($p))
 		{
 			$isFound = false;
 			return null;
@@ -32,7 +32,7 @@ class SkeletonLoader
 		try
 		{
 			$isFound = true;
-			return $this->skeleton->get($p->getClass());
+			return $this->skeleton->get(get_param_class($p));
 		}
 		catch (ImplementerNotDefinedException $e)
 		{

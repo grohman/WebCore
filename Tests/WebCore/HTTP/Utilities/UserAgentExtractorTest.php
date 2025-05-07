@@ -3,48 +3,38 @@ namespace WebCore\HTTP\Utilities;
 
 
 use PHPUnit\Framework\TestCase;
-use WebCore\WebRequest;
+use WebCore\HTTP\Requests\StandardWebRequest;
 
 
 class UserAgentExtractorTest extends TestCase
 {
-	private static array $server = [];
-	
-	
-	protected function setUp(): void
+	protected function setUp()
 	{
 		$_SERVER = [];
-		
-		resetStaticDataMember(HeadersLoader::class, 'exactHeaders');
-		resetStaticDataMember(HeadersLoader::class, 'lowerCaseHeaders');
+		resetStaticDataMember(HeadersLoader::class, 'headers');
 	}
 	
 	
 	public function test_get_UserAgentInRequestHeader_ReturnUserAgent()
 	{
 		$_SERVER['HTTP_User-Agent'] = 'Test';
-		$request = new WebRequest();
-		$request->getHeaders(true);
+		$request = new StandardWebRequest();
+		$request->getHeaders();
 		
 		self::assertEquals('Test', UserAgentExtractor::get($request, 'Test3'));
 	}
 	
 	public function test_get_NoUserAgent_ReturnDefault()
 	{
-		$request = new WebRequest();
+		$request = new StandardWebRequest();
 		$request->getHeaders();
 		
 		self::assertEquals('Test3', UserAgentExtractor::get($request, 'Test3'));
 	}
 	
 	
-	public static function setUpBeforeClass(): void
+	public static function tearDownAfterClass()
 	{
-		self::$server = $_SERVER;
-	}
-	
-	public static function tearDownAfterClass(): void
-	{
-		$_SERVER = self::$server;
+		$_SERVER = [];
 	}
 }

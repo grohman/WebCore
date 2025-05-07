@@ -3,6 +3,7 @@ namespace WebCore\HTTP\Utilities;
 
 
 use Traitor\TStaticClass;
+use WebCore\HTTP\Utilities;
 
 
 class HeadersLoader
@@ -33,7 +34,7 @@ class HeadersLoader
 			
 			foreach (self::$exactHeaders as $key => $value)
 			{
-				self::$lowerCaseHeaders[strtolower($key)] = $value;
+				self::$lowerCaseHeaders[Utilities::getGenericHeaderName($key)] = $value;
 			}
 		}
 		else if (isset($_SERVER))
@@ -47,7 +48,7 @@ class HeadersLoader
 				{
 					$key = substr($key, 5);
 					$headers[$key] = $value;
-					$lowercaseHeaders[strtolower($key)] = $value;
+					$lowercaseHeaders[Utilities::getGenericHeaderName($key)] = $value;
 				}
 			}
 			
@@ -56,7 +57,7 @@ class HeadersLoader
 				if (isset($_SERVER[$special]))
 				{
 					$headers[$special] = $_SERVER[$special];
-					$lowercaseHeaders[strtolower($special)] = $_SERVER[$special];
+					$lowercaseHeaders[Utilities::getGenericHeaderName($special)] = $_SERVER[$special];
 				}
 			}
 			

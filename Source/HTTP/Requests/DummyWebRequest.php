@@ -62,6 +62,26 @@ class DummyWebRequest implements IWebRequest
 	{ 
 		return $this->getMethod() == Method::DELETE; 
 	}
+
+	public function isHead(): bool
+	{
+		return $this->getMethod() == Method::HEAD;
+	}
+
+	public function isPatch(): bool
+	{
+		return $this->getMethod() == Method::PATCH;
+	}
+
+	public function isOptions(): bool
+	{
+		return $this->getMethod() == Method::OPTIONS;
+	}
+
+	public function isTrace(): bool
+	{
+		return $this->getMethod() == Method::TRACE;
+	}
 	
 	public function isHttp(): bool 
 	{ 

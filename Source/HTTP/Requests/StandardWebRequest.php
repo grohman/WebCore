@@ -53,6 +53,26 @@ class StandardWebRequest implements IWebRequest
 	{ 
 		return $this->getMethod() == Method::DELETE; 
 	}
+
+	public function isHead(): bool
+	{
+		return $this->getMethod() == Method::HEAD;
+	}
+
+	public function isPatch(): bool
+	{
+		return $this->getMethod() == Method::PATCH;
+	}
+
+	public function isOptions(): bool
+	{
+		return $this->getMethod() == Method::OPTIONS;
+	}
+
+	public function isTrace(): bool
+	{
+		return $this->getMethod() == Method::TRACE;
+	}
 	
 	public function isHttp(): bool 
 	{ 
@@ -165,7 +185,7 @@ class StandardWebRequest implements IWebRequest
 	public function getHeader(string $header, ?string $default = null, bool $caseSensitive = false): ?string
 	{
 		if (!$caseSensitive)
-			$header = strtolower($header);
+			$header = Utilities::getGenericHeaderName($header);
 		
 		$headers = Utilities::getAllHeaders($caseSensitive);
 		return $headers[$header] ?? $default;
@@ -174,7 +194,7 @@ class StandardWebRequest implements IWebRequest
 	public function hasHeader(string $header, bool $caseSensitive = false): bool
 	{
 		if (!$caseSensitive)
-			$header = strtolower($header);
+			$header = Utilities::getGenericHeaderName($header);
 		
 		return key_exists($header, Utilities::getAllHeaders($caseSensitive));
 	}

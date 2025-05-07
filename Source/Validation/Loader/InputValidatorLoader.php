@@ -30,7 +30,7 @@ class InputValidatorLoader
 
 	public function get(\ReflectionParameter $p)
 	{
-		$class = $p->getClass();
+		$class = get_param_class($p);
 		
 		/** @var IInputValidator $item */
 		
@@ -40,7 +40,7 @@ class InputValidatorLoader
 		}
 		else if ($class->isInterface())
 		{
-			$item = $this->skeleton->get((string)$p->getType());
+			$item = $this->skeleton->get($p->getType()->getName());
 		}
 		else 
 		{

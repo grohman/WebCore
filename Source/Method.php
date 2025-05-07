@@ -15,6 +15,9 @@ class Method
 	const POST 		= 'POST';
 	const PUT 		= 'PUT';
 	const DELETE 	= 'DELETE';
+	const PATCH		= 'PATCH';
 	const OPTIONS 	= 'OPTIONS';
+	const CONNECT	= 'CONNECT';
+	const TRACE		= 'TRACE';
 	const UNKNOWN 	= 'UNKNOWN';
 }
