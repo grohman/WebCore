@@ -2,7 +2,6 @@
 namespace WebCore\HTTP\Responses;
 
 
-use Oktopost\Log\DebugLog;
 use WebCore\Cookie;
 use WebCore\IWebResponse;
 
@@ -198,30 +197,13 @@ class StandardWebResponse implements IWebResponse
 		{
 			foreach ($headerValues as $headerValue) 
 			{
-				try
+				if (is_null($headerValue))
 				{
-					if (is_null($headerValue))
-					{
-						header($headerName);
-					}
-					else
-					{
-						header("$headerName: $headerValue");
-					}
+					header($headerName);
 				}
-				catch (\Throwable $t)
+				else
 				{
-					$request = \WebCore\WebRequest::current();
-					
-					DebugLog::core()->critException($t, 'Cannot set header information', [
-						"Request" => [
-							'url'	 => $request->getURL(),
-							'method' => $request->getMethod(),
-							'params' => $request->getParamsArray()
-						]
-					]);
-					
-					throw $t;
+					header("$headerName: $headerValue");
 				}
 			}
 		}
