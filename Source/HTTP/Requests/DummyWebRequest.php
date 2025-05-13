@@ -29,7 +29,6 @@ class DummyWebRequest implements IWebRequest
 	private $clientIp		= null;
 	private $uri			= '';
 	private $cookies		= [];
-	private $useJSONBody	= false;
 	
 	
 	public function __construct(array $params = [], array $headers = [])
@@ -406,11 +405,5 @@ class DummyWebRequest implements IWebRequest
 			self::$current = new static();
 		
 		return self::$current;
-	}
-	
-	public function useJSONOnPost(): static
-	{
-		$this->useJSONBody = true;
-		return $this;
 	}
 }
