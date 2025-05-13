@@ -27,7 +27,14 @@ class StandardWebRequest implements IWebRequest
 	private $body			= null;
 	private $requestParams 	= null;
 	private $routeParams	= [];
+	private $useJSONBody	= false;
 	
+	
+	public function useJSONOnPost(): static
+	{
+		$this->useJSONBody = true;
+		return $this;
+	}
 	
 	public function isMethod(string $method): bool 
 	{ 
@@ -212,6 +219,12 @@ class StandardWebRequest implements IWebRequest
 			{
 				case Method::POST:
 					$this->params = self::getPostArray();
+					
+					if (!$this->params && $this->useJSONBody)
+					{
+						$this->params = $this->getJson();
+					}
+					
 					break;
 					
 				case Method::PUT:

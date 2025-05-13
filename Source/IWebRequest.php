@@ -8,6 +8,7 @@ use WebCore\Base\HTTP\IRequestFiles;
 
 interface IWebRequest
 {
+	public function useJSONOnPost(): static;
 	public function getMethod(): string;
 	public function isMethod(string $method): bool;
 	public function isGet(): bool;
