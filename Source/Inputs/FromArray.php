@@ -234,9 +234,15 @@ class FromArray implements IInput
 	
 	public function bool(string $name, ?bool $default = null): ?bool
 	{
-		return $this->has($name) && InputValidationHelper::isBool($this->source[$name]) ?
-			BooleanConverter::get($this->source[$name]) :
-			$default;
+		if (!$this->has($name))
+			return $default;
+		
+		if (InputValidationHelper::isString($this->source[$name]))
+		{
+			return BooleanConverter::get($this->source[$name]);
+		}
+		
+		return InputValidationHelper::isBool($this->source[$name]) ? $this->source[$name] : $default;
 	}
 	
 	public function float(string $name, ?float $default = null): ?float

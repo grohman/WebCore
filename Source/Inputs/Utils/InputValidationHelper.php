@@ -33,9 +33,14 @@ class InputValidationHelper
 	 * @param array|string $value
 	 * @return bool
 	 */
-	public static function isBool($value): bool 
+	public static function isString($value): bool 
 	{
 		return is_string($value);
+	}
+	
+	public static function isBool($value): bool
+	{
+		return is_bool($value);
 	}
 	
 	/**
