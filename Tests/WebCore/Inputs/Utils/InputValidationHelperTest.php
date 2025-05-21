@@ -50,7 +50,7 @@ class InputValidationHelperTest extends TestCase
 	
 	public function test_isBool_String_ReturnTrue()
 	{
-		self::assertTrue(InputValidationHelper::isBool('someString'));
+		self::assertFalse(InputValidationHelper::isBool('someString'));
 	}
 	
 	public function test_isBool_Array_ReturnFalse()

@@ -4,6 +4,7 @@ namespace WebCore\Inputs;
 
 use PHPUnit\Framework\TestCase;
 use Traitor\TEnum;
+use WebCore\Exception\WebCoreFatalException;
 
 
 class FromArrayTest extends TestCase
@@ -197,11 +198,10 @@ class FromArrayTest extends TestCase
 		self::assertEquals('a', $subject->regex('a', '/a/', 'a'));
 	}
 
-	/**
-	 * @expectedException \WebCore\Exception\WebCoreFatalException
-	 */
 	public function test_regex_RegexNotValid_ExceptionThrown()
 	{
+		self::expectException(WebCoreFatalException::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->regex('a', '[', 'a');
@@ -228,31 +228,28 @@ class FromArrayTest extends TestCase
 		self::assertEquals('a', $subject->enum('a', ['c'], 'a'));
 	}
 
-	/**
-	 * @expectedException \WebCore\Exception\WebCoreFatalException
-	 */
 	public function test_enum_ValuesNotStringOrArray_ExceptionThrown()
 	{
+		self::expectException(WebCoreFatalException::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->enum('a', 1.1, 'a');
 	}
 	
-	/**
-	 * @expectedException \WebCore\Exception\WebCoreFatalException
-	 */
 	public function test_enum_ValuesNotClass_ExceptionThrown()
 	{
+		self::expectException(WebCoreFatalException::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->enum('a', 'SomeString', 'a');
 	}
 	
-	/**
-	 * @expectedException \WebCore\Exception\WebCoreFatalException
-	 */
 	public function test_enum_ValuesNotTEnum_ExceptionThrown()
 	{
+		self::expectException(WebCoreFatalException::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->enum('a', FromArrayTestHelper_A::class, 'a');
@@ -272,21 +269,19 @@ class FromArrayTest extends TestCase
 		self::assertEquals('a', $subject->enum('a', FromArrayTestHelper_B::class, 'a'));
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_requireInt_NotExists_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray([]);
 		
 		$subject->requireInt('a');
 	}
     
-    /**
-     * @expectedException \Exception
-     */
     public function test_requireInt_ValueNotInt_ExceptionThrown()
     {
+		self::expectException(\Exception::class);
+		
         $subject = new FromArray(['a' => 'test']);
         
         $subject->requireInt('a');
@@ -299,21 +294,19 @@ class FromArrayTest extends TestCase
 		self::assertEquals(2, $subject->requireInt('a'));
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_requireBool_NotExists_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray([]);
 		
 		$subject->requireBool('a');
 	}
 	
-    /**
-     * @expectedException \Exception
-     */
     public function test_requireBool_ValueNotBool_ExceptionThrown()
     {
+		self::expectException(\Exception::class);
+		
         $subject = new FromArray(['a' => []]);
         
         $subject->requireBool('a');
@@ -326,21 +319,19 @@ class FromArrayTest extends TestCase
 		self::assertTrue($subject->requireBool('a'));
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_requireFloat_NotExists_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray([]);
 		
 		$subject->requireFloat('a');
 	}
     
-    /**
-     * @expectedException \Exception
-     */
     public function test_requireFloat_ValueNotFloat_ExceptionThrown()
     {
+		self::expectException(\Exception::class);
+		
         $subject = new FromArray(['a' => '2.a']);
         
         $subject->requireFloat('a');
@@ -353,21 +344,19 @@ class FromArrayTest extends TestCase
 		self::assertEquals(3.2, $subject->requireFloat('a'));
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_require_NotExists_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray([]);
 		
 		$subject->require('a');
 	}
     
-    /**
-     * @expectedException \Exception
-     */
     public function test_require_NotString_ExceptionThrown()
     {
+		self::expectException(\Exception::class);
+		
         $subject = new FromArray(['a' => []]);
         
         $subject->require('a');
@@ -385,6 +374,8 @@ class FromArrayTest extends TestCase
 	 */
 	public function test_requireRegex_NotExists_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray([]);
 		
 		$subject->requireRegex('a', '/./');
@@ -397,31 +388,28 @@ class FromArrayTest extends TestCase
 		self::assertEquals('b', $subject->requireRegex('a', '/b/'));
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_requireRegex_ExistsAndNotValid_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->requireRegex('a', '/a/');
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_requireRegex_RegexNotValid_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->requireRegex('a', '[');
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_requireEnum_NotExists_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray([]);
 		
 		$subject->requireEnum('a', []);
@@ -434,41 +422,37 @@ class FromArrayTest extends TestCase
 		self::assertEquals('b', $subject->requireEnum('a', ['b']));
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_requireEnum_ValuesArrayAndNotExists_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->requireEnum('a', ['c']);
 	}
 	
-	/**
-	 * @expectedException \WebCore\Exception\WebCoreFatalException
-	 */
 	public function test_requireEnum_ValuesNotStringOrArray_ExceptionThrown()
 	{
+		self::expectException(WebCoreFatalException::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->requireEnum('a', 1.1);
 	}
 	
-	/**
-	 * @expectedException \WebCore\Exception\WebCoreFatalException
-	 */
 	public function test_requireEnum_ValuesNotClass_ExceptionThrown()
 	{
+		self::expectException(WebCoreFatalException::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->requireEnum('a', 'SomeString');
 	}
 	
-	/**
-	 * @expectedException \WebCore\Exception\WebCoreFatalException
-	 */
 	public function test_requireEnum_ValuesNotTEnum_ExceptionThrown()
 	{
+		self::expectException(WebCoreFatalException::class);
+		
 		$subject = new FromArray(['a' => 'b']);
 		
 		$subject->requireEnum('a', FromArrayTestHelper_A::class);
@@ -481,11 +465,10 @@ class FromArrayTest extends TestCase
 		self::assertEquals('b', $subject->requireEnum('a', FromArrayTestHelper_B::class));
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_requireEnum_ValuesTEnumAndNotExists_ExceptionThrown()
 	{
+		self::expectException(\Exception::class);
+		
 		$subject = new FromArray(['a' => 'c']);
 		
 		$subject->requireEnum('a', FromArrayTestHelper_B::class);

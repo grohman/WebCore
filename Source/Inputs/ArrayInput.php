@@ -93,7 +93,12 @@ class ArrayInput
 			return $default;
 		
 		return $this->parseSource(function($item) {
-			return InputValidationHelper::isBool($item) ? BooleanConverter::get($item) : null;
+			if (InputValidationHelper::isString($item))
+			{
+				return BooleanConverter::get($item);
+			}
+			
+			return InputValidationHelper::isBool($item) ? $item : null;
 		}, $default);
 	}
 	
@@ -146,8 +151,14 @@ class ArrayInput
 		if (is_null($this->source))
 			return $default;
 		
-		return $this->filterSource(function($item) {
-			return InputValidationHelper::isBool($item) ? BooleanConverter::get($item) : null;
+		return $this->filterSource(function($item) 
+		{
+			if (InputValidationHelper::isString($item))
+			{
+				return BooleanConverter::get($item);
+			}
+			
+			return InputValidationHelper::isBool($item) ? $item : null;
 		});
 	}
 	
@@ -215,10 +226,16 @@ class ArrayInput
 			throw new BadRequestException("Required parameter not set");
 		
 		return $this->parseSource(function($item) {
+			
+			if (InputValidationHelper::isString($item))
+			{
+				return BooleanConverter::get($item);
+			}
+			
 			if (!InputValidationHelper::isBool($item))
 				throw new BadRequestException("Required to be bool");
 			
-			return BooleanConverter::get($item);
+			return $item;
 		});
 	}
 	

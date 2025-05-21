@@ -30,7 +30,8 @@
 		"unstable-cacao/structura": "^3.0"
 	},
     "require-dev": {
-        "phpunit/phpunit": "^10.5.46",
+		"phpunit/phpunit": "^10.5",
+		"overtrue/phplint": "^9.6",
 		"php-coveralls/php-coveralls": "^2.1"
     },
 	"autoload": 
@@ -41,6 +42,7 @@
 		}
 	},
     "scripts": {
+		"lint": "./vendor/bin/phplint --exclude=vendor Source",
         "test": "./vendor/phpunit/phpunit/phpunit --dont-report-useless-tests",
         "test-cover": "./vendor/phpunit/phpunit/phpunit --dont-report-useless-tests --coverage-html ./build/cover"
     }

@@ -8,10 +8,11 @@ use WebCore\HTTP\Requests\StandardWebRequest;
 
 class UserIPExtractorTest extends TestCase
 {
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$_SERVER = [];
-		resetStaticDataMember(HeadersLoader::class, 'headers');
+		resetStaticDataMember(HeadersLoader::class, 'exactHeaders');
+		resetStaticDataMember(HeadersLoader::class, 'lowerCaseHeaders');
 	}
 	
 	
@@ -60,7 +61,7 @@ class UserIPExtractorTest extends TestCase
 	}
 	
 	
-	public static function tearDownAfterClass()
+	public static function tearDownAfterClass(): void
 	{
 		$_SERVER = [];
 	}

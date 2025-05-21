@@ -341,10 +341,17 @@ class FromArray implements IInput
         if (!$this->has($name))
 			throw new BadRequestException("Required parameter not set");
 		
+		if (InputValidationHelper::isString($this->source[$name]))
+		{
+			return BooleanConverter::get($this->source[$name]);
+		}
+		
 		if (!InputValidationHelper::isBool($this->source[$name]))
+		{
 			throw new BadRequestException("Required parameter must be bool");
+		}
         
-        return BooleanConverter::get($this->source[$name]);
+        return $this->source[$name];
 	}
 	
 	public function requireFloat(string $name): float

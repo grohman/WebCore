@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class IsHTTPSValidatorTest extends TestCase
 {
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$_SERVER = [];
 		resetStaticDataMember(IsHTTPSValidator::class, 'isHttps');
@@ -44,7 +44,7 @@ class IsHTTPSValidatorTest extends TestCase
 	}
 	
 	
-	public static function tearDownAfterClass()
+	public static function tearDownAfterClass(): void
 	{
 		$_SERVER = [];
 	}

@@ -3,6 +3,7 @@
 /.project
 /.settings
 /.idea
+/.phplint.cache
 
 # OS Folders
 .DS_Store
@@ -15,3 +16,5 @@
 
 # Build folders
 /build
+
+.phpunit.result.cache
